@@ -1,5 +1,5 @@
 
-## Obtaining Our Data
+# Obtaining Our Data
 
 ## Introduction
 In this lesson, we'll sythesize many of our data loading skills to date in order to merge multiple datasets from various sources.
@@ -11,6 +11,137 @@ You will be able to:
 
 ## Loading SQL DB to DataFrames
 <img src="Database-Schema.png">
+
+
+```python
+import sqlite3
+import pandas as pd
+
+#Create a connection
+con = sqlite3.connect('data.sqlite')
+#Create a cursor
+cur = con.cursor()
+#Select some data
+cur.execute("""select * from orders join orderdetails using(orderNumber);""")
+df = pd.DataFrame(cur.fetchall())
+df.columns = [i[0] for i in cur.description]
+print(df.shape)
+df.head()
+```
+
+    (2996, 11)
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>orderNumber</th>
+      <th>orderDate</th>
+      <th>requiredDate</th>
+      <th>shippedDate</th>
+      <th>status</th>
+      <th>comments</th>
+      <th>customerNumber</th>
+      <th>productCode</th>
+      <th>quantityOrdered</th>
+      <th>priceEach</th>
+      <th>orderLineNumber</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>10100</td>
+      <td>2003-01-06</td>
+      <td>2003-01-13</td>
+      <td>2003-01-10</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>363</td>
+      <td>S18_1749</td>
+      <td>30</td>
+      <td>136.00</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>10100</td>
+      <td>2003-01-06</td>
+      <td>2003-01-13</td>
+      <td>2003-01-10</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>363</td>
+      <td>S18_2248</td>
+      <td>50</td>
+      <td>55.09</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>10100</td>
+      <td>2003-01-06</td>
+      <td>2003-01-13</td>
+      <td>2003-01-10</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>363</td>
+      <td>S18_4409</td>
+      <td>22</td>
+      <td>75.46</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>10100</td>
+      <td>2003-01-06</td>
+      <td>2003-01-13</td>
+      <td>2003-01-10</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>363</td>
+      <td>S24_3969</td>
+      <td>49</td>
+      <td>35.29</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>10101</td>
+      <td>2003-01-09</td>
+      <td>2003-01-18</td>
+      <td>2003-01-11</td>
+      <td>Shipped</td>
+      <td>Check on availability.</td>
+      <td>128</td>
+      <td>S18_2325</td>
+      <td>25</td>
+      <td>108.06</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 
 ```python
@@ -39,17 +170,17 @@ df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -161,17 +292,17 @@ df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -280,7 +411,7 @@ df.head()
 
 
 
-We can also merge data from a seperate csv file. For example, say we take a seperate data source regarding weather for various cities across various dates in order to compare what impact weather is having on our product sales. We could first generate a view from our database?
+We can also merge data from a seperate csv file. For example, say we take a seperate data source regarding daily sales data for our various branches. We might first generate a view from our database:
 
 
 ```python
@@ -305,17 +436,17 @@ df.head()
 
 
 <div>
-<style>
-    .dataframe thead tr:only-child th {
-        text-align: right;
-    }
-
-    .dataframe thead th {
-        text-align: left;
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
     }
 
     .dataframe tbody tr th {
         vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
     }
 </style>
 <table border="1" class="dataframe">
@@ -460,18 +591,98 @@ df.head()
 
 
 
-And then load a datafile regarding weather for these cities and dates:
+And then load the seperate datefile:
 
 
 ```python
-#Insert weather file once generated
-weather = pd.read_csv()
-weather.head()
+daily_sums = pd.read_csv('Daily_Sales_Summaries.csv')
+daily_sums.head()
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>orderDate</th>
+      <th>min</th>
+      <th>max</th>
+      <th>sum</th>
+      <th>mean</th>
+      <th>std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2003-01-06</td>
+      <td>1660.12</td>
+      <td>4080.00</td>
+      <td>10223.83</td>
+      <td>2555.957500</td>
+      <td>1132.572429</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2003-01-09</td>
+      <td>1463.85</td>
+      <td>4343.56</td>
+      <td>10549.01</td>
+      <td>2637.252500</td>
+      <td>1244.866467</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2003-01-10</td>
+      <td>1768.33</td>
+      <td>3726.45</td>
+      <td>5494.78</td>
+      <td>2747.390000</td>
+      <td>1384.599930</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2003-01-29</td>
+      <td>1283.48</td>
+      <td>5571.80</td>
+      <td>50218.95</td>
+      <td>3138.684375</td>
+      <td>1168.280303</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2003-01-31</td>
+      <td>1338.04</td>
+      <td>4566.99</td>
+      <td>40206.20</td>
+      <td>3092.784615</td>
+      <td>1148.570425</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
 ```python
-merged = pd.merge(df, weather)
+merged = pd.merge(df, daily_sums)
 ```
 
 ## Checking Merged Data
@@ -483,57 +694,186 @@ It's always good practice to check assumptions and preview transformed data view
 merged.head()
 ```
 
-Whoa!You might notice that we ended up with two date fields. This is problematic and indicates that our join had some unintentional consequences. We intended for our data files to be merged on City and Date fields. Unlike SQL joins , the built in Pandas merge method conveniently uses common column names between the dataframes. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperitive to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and seperate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. With that, let's retrace our steps in a more diligent and thoughtful manner. To start, let's preview the table schemas we are about to join:
 
 
-```python
-df.info()
-```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>customerNumber</th>
+      <th>customerName</th>
+      <th>contactLastName</th>
+      <th>contactFirstName</th>
+      <th>phone</th>
+      <th>addressLine1</th>
+      <th>addressLine2</th>
+      <th>city</th>
+      <th>state</th>
+      <th>postalCode</th>
+      <th>...</th>
+      <th>orderDate</th>
+      <th>requiredDate</th>
+      <th>shippedDate</th>
+      <th>status</th>
+      <th>comments</th>
+      <th>min</th>
+      <th>max</th>
+      <th>sum</th>
+      <th>mean</th>
+      <th>std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>103</td>
+      <td>Atelier graphique</td>
+      <td>Schmitt</td>
+      <td>Carine</td>
+      <td>40.32.2555</td>
+      <td>54, rue Royale</td>
+      <td></td>
+      <td>Nantes</td>
+      <td></td>
+      <td>44000</td>
+      <td>...</td>
+      <td>2003-05-20</td>
+      <td>2003-05-29</td>
+      <td>2003-05-22</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>2163.50</td>
+      <td>5282.64</td>
+      <td>14571.44</td>
+      <td>3642.860000</td>
+      <td>1322.891537</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>103</td>
+      <td>Atelier graphique</td>
+      <td>Schmitt</td>
+      <td>Carine</td>
+      <td>40.32.2555</td>
+      <td>54, rue Royale</td>
+      <td></td>
+      <td>Nantes</td>
+      <td></td>
+      <td>44000</td>
+      <td>...</td>
+      <td>2004-09-27</td>
+      <td>2004-10-05</td>
+      <td>2004-10-01</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>1938.24</td>
+      <td>4128.54</td>
+      <td>6066.78</td>
+      <td>3033.390000</td>
+      <td>1548.775983</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>103</td>
+      <td>Atelier graphique</td>
+      <td>Schmitt</td>
+      <td>Carine</td>
+      <td>40.32.2555</td>
+      <td>54, rue Royale</td>
+      <td></td>
+      <td>Nantes</td>
+      <td></td>
+      <td>44000</td>
+      <td>...</td>
+      <td>2004-11-25</td>
+      <td>2004-12-01</td>
+      <td>2004-11-26</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>557.60</td>
+      <td>7573.50</td>
+      <td>20564.45</td>
+      <td>2570.556250</td>
+      <td>2178.832190</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>350</td>
+      <td>Marseille Mini Autos</td>
+      <td>Lebihan</td>
+      <td>Laurence</td>
+      <td>91.24.4555</td>
+      <td>12, rue des Bouchers</td>
+      <td></td>
+      <td>Marseille</td>
+      <td></td>
+      <td>13008</td>
+      <td>...</td>
+      <td>2004-11-25</td>
+      <td>2004-12-02</td>
+      <td>2004-11-29</td>
+      <td>Shipped</td>
+      <td></td>
+      <td>557.60</td>
+      <td>7573.50</td>
+      <td>20564.45</td>
+      <td>2570.556250</td>
+      <td>2178.832190</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>112</td>
+      <td>Signal Gift Stores</td>
+      <td>King</td>
+      <td>Jean</td>
+      <td>7025551838</td>
+      <td>8489 Strong St.</td>
+      <td></td>
+      <td>Las Vegas</td>
+      <td>NV</td>
+      <td>83030</td>
+      <td>...</td>
+      <td>2003-05-21</td>
+      <td>2003-05-29</td>
+      <td>2003-05-25</td>
+      <td>Shipped</td>
+      <td>Customer very concerned about the exact color ...</td>
+      <td>798.38</td>
+      <td>4704.92</td>
+      <td>40207.06</td>
+      <td>2680.470667</td>
+      <td>1255.052262</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div>
 
 
-```python
-weather.info()
-```
 
-Roughly we're probably looking to join on:
-* city
-* state
-* country
-* date
-
-Important considerations to successfully making a meaningful join will then be ensuring that the formatting and naming conventions of these fields is identical (or as close as reasonably possible) between the two files. Depending on the size of the files, and the complexity of the data, this can be a grueling process. Let's investigate just a bit further:
-
-* For each dataframe, what are the top values for each field we'll be joining on?
-* Do these have identical matches between tables?
-* Create a mapping between seperate formatting conventions
-
-
-```python
-
-```
-
-
-```python
-Ou
-```
-
-
-```python
-## Objective 3 content
-```
-
-## Preprocessing for Merges
-
-
-```python
-
-```
+Pandas merge method conveniently uses common column names between the dataframes. You can always specifically specify what columns to join on by using the `on` clause as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperitive to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and seperate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
 
 ## Saving Transformed Data to File
+Finally, we can save our transformed dataset.
 
 
 ```python
-df.to_csv('')
+merged.to_csv('Merged_Dataset.csv', index=False)
 ```
 
 ## Summary

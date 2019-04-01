@@ -2,7 +2,7 @@
 # Obtaining Our Data
 
 ## Introduction
-In this lesson, we'll sythesize many of our data loading skills to date in order to merge multiple datasets from various sources.
+In this lesson, you'll sythesize many of your data loading skills to date in order to merge multiple datasets from various sources.
 
 ## Objectives
 You will be able to:
@@ -267,7 +267,7 @@ df.head()
 
 ## Merging Data
 
-Recall that we can also join data from multiple tables in sql.
+Recall that you can also join data from multiple tables in sql.
 
 
 ```python
@@ -411,7 +411,7 @@ df.head()
 
 
 
-We can also merge data from a seperate csv file. For example, say we take a seperate data source regarding daily sales data for our various branches. We might first generate a view from our database:
+You can also merge data from a seperate csv file. For example, say you take a seperate data source regarding daily sales data for the various branches. You might first generate a view from our database:
 
 
 ```python
@@ -877,4 +877,4 @@ merged.to_csv('Merged_Dataset.csv', index=False)
 ```
 
 ## Summary
-Well done! In this lesson we review merges, as well as potential pitfalls in merging datasets from different sources. In the next lab, you'll get some practice doing this as an initial step to a regression task.
+Well done! In this lesson you reviewed merges, as well as potential pitfalls in merging datasets from different sources. In the next lab, you'll get some practice doing this as an initial step to a regression task.

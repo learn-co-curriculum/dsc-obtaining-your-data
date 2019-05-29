@@ -2,7 +2,7 @@
 # Obtaining Your Data
 
 ## Introduction
-In this lesson, you'll sythesize many of your data loading skills to date in order to merge multiple datasets from various sources.
+In this lesson, you'll synthesize many of your data loading skills to date in order to merge multiple datasets from various sources.
 
 ## Objectives
 You will be able to:
@@ -411,7 +411,7 @@ df.head()
 
 
 
-You can also merge data from a seperate csv file. For example, say you take a seperate data source regarding daily sales data for the various branches. You might first generate a view from our database:
+You can also merge data from a separate csv file. For example, say you take a separate data source regarding daily sales data for the various branches. You might first generate a view from our database:
 
 
 ```python
@@ -866,7 +866,7 @@ merged.head()
 
 
 
-Pandas merge method conveniently uses common column names between the dataframes. You can always specifically specify what columns to join on by using the `on` clause as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperitive to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and seperate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
+Pandas merge method conveniently uses common column names between the dataframes. You can always specifically specify what columns to join on by using the `on` clause as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperative to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and separate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
 
 ## Saving Transformed Data to File
 Finally, we can save our transformed dataset.

@@ -2,7 +2,7 @@
 # Obtaining Your Data
 
 ## Introduction
-In this lesson, you'll synthesize many of your data loading skills to date in order to merge multiple datasets from various sources.
+In this lesson, you'll synthesize many of your data loading skills you learned to date in order to merge multiple datasets from various sources.
 
 ## Objectives
 You will be able to:
@@ -17,12 +17,12 @@ You will be able to:
 import sqlite3
 import pandas as pd
 
-#Create a connection
+# Create a connection
 con = sqlite3.connect('data.sqlite')
-#Create a cursor
+# Create a cursor
 cur = con.cursor()
-#Select some data
-cur.execute("""select * from orders join orderdetails using(orderNumber);""")
+# Select some data
+cur.execute("""SELECT * FROM orders JOIN orderdetails USING(orderNumber);""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 print(df.shape)
@@ -145,18 +145,12 @@ df.head()
 
 
 ```python
-import sqlite3
-import pandas as pd
-```
-
-
-```python
-#Create a connection
+# Create a connection
 con = sqlite3.connect('data.sqlite')
-#Create a cursor
+# Create a cursor
 cur = con.cursor()
-#Select some data
-cur.execute("""select * from products;""")
+# Select some data
+cur.execute("""SELECT * FROM products;""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 print(df.shape)
@@ -267,18 +261,18 @@ df.head()
 
 ## Merging Data
 
-Recall that you can also join data from multiple tables in sql.
+Recall that you can also join data from multiple tables in SQL.
 
 
 ```python
-#Create a connection
+# Create a connection
 con = sqlite3.connect('data.sqlite')
-#Create a cursor
+# Create a cursor
 cur = con.cursor()
-#Select some data
-cur.execute("""select * from products
-                        join orderdetails
-                        using (productCode);""")
+# Select some data
+cur.execute("""SELECT * FROM products
+                        JOIN orderdetails
+                        USING (productCode);""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 print(df.shape)
@@ -415,14 +409,14 @@ You can also merge data from a separate csv file. For example, say you take a se
 
 
 ```python
-#Create a connection
+# Create a connection
 con = sqlite3.connect('data.sqlite')
-#Create a cursor
+# Create a cursor
 cur = con.cursor()
-#Select some data
-cur.execute("""select * from customers
-                        join orders
-                        using(customerNumber);""")
+# Select some data
+cur.execute("""SELECT * FROM customers
+                        JOIN orders
+                        USING(customerNumber);""")
 df = pd.DataFrame(cur.fetchall())
 df.columns = [i[0] for i in cur.description]
 print(df.shape)
@@ -866,7 +860,7 @@ merged.head()
 
 
 
-Pandas merge method conveniently uses common column names between the dataframes. You can always specifically specify what columns to join on by using the `on` clause as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperative to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and separate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
+Pandas' `merge()` function conveniently uses common column names between the DataFrames as keys. You can always specifically specify what columns to join on by using the `on` keyword as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperative to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and separate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
 
 ## Saving Transformed Data to File
 Finally, we can save our transformed dataset.

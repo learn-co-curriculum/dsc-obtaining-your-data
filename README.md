@@ -2,15 +2,19 @@
 # Obtaining Your Data
 
 ## Introduction
-In this lesson, you'll synthesize many of your data loading skills you learned to date in order to merge multiple datasets from various sources.
+In this lesson, you'll synthesize many of your data loading skills you learned to date in order to merge multiple datasets from various sources as part of an ETL process.
 
 ## Objectives
 You will be able to:
-* Understand the ETL process and the steps it consists of
-* Understand the challenges of working with data from multiple sources 
+* Describe the ETL process and the steps it consists of
+* Perform an ETL process with multiple tables and create a single dataset
 
 ## Loading SQL DB to DataFrames
+Recall, that ETL refers to the **E**xtract, **T**ransform, **L**oad procedure for obtaining data that you can work with. Here, you'll reinforce your ETL skills by creating a single dataset from multiple data tables.
+
 <img src="Database-Schema.png">
+
+Start extracting data with the code cells below!
 
 
 ```python
@@ -261,7 +265,7 @@ df.head()
 
 ## Merging Data
 
-Recall that you can also join data from multiple tables in SQL.
+Recall, that you can also join data from multiple tables in SQL.
 
 
 ```python
@@ -860,7 +864,7 @@ merged.head()
 
 
 
-Pandas' `merge()` function conveniently uses common column names between the DataFrames as keys. You can always specifically specify what columns to join on by using the `on` keyword as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this convenience method. Additionally, it is imperative to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and separate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
+Pandas' `merge()` function conveniently uses common column names between the DataFrames as keys. You can always specify what columns to join on by using the `on` keyword as in `pd.merge(df1, df2, on=[col1, col2])`. Unfortunately, columns that are not identically named beforehand will not work with this method. Additionally, it is imperative to check the formatting of the join keys between the tables. A number formatted as a string can often ruin joins, and separate formatting conventions such as 'U.S.' versus 'USA' are also important preprocessing considerations before merging data files from various sources. In this case, everything worked smoothly, but it's good to keep in mind what problems may occur.
 
 ## Saving Transformed Data to File
 Finally, we can save our transformed dataset.
@@ -871,4 +875,4 @@ merged.to_csv('Merged_Dataset.csv', index=False)
 ```
 
 ## Summary
-Well done! In this lesson you reviewed merges, as well as potential pitfalls in merging datasets from different sources. In the next lab, you'll get some practice doing this as an initial step to a regression task.
+Well done! In this lesson you went through an ETL process by performing merges. You also saw the potential pitfalls in merging datasets from different sources. In the next lab, you'll get some practice doing this as an initial step to a regression task.
